@@ -1,0 +1,152 @@
+class Presentational extends React.Component {
+  constructor(props) {
+      super(props);
+      this.state = {inputValue: "0", memory: [0]}
+      this.digitClick = this.digitClick.bind(this);
+      this.acClick = this.acClick.bind(this);
+      this.dotClick = this.dotClick.bind(this);
+      this.operatorClick = this.operatorClick.bind(this);
+      this.equalClick = this.equalClick.bind(this);
+      this.zeroClick = this.zeroClick.bind(this);
+  }
+  digitClick(event) {
+    const inputRegEx = /[1-9]|\./;
+    const inputRegEx2 = /\/|\*|\-|\+/;
+    const inputRegEx3 = /\d\.?0/g;
+    const x = this.state.inputValue[this.state.inputValue.length - 1];  
+    if (this.state.inputValue[0] === "0" && this.state.memory[0] === 0) { 
+      //need to fix line above to start with 0.XXX, also can refractor in this area
+      this.setState({inputValue: event.target.value, memory: [event.target.value]});
+    } else if (inputRegEx.test(x)) {
+      this.setState({inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value)});
+      } else if (inputRegEx2.test(x) || this.state.inputValue === "0") {
+        this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)});
+        } else if (inputRegEx3.test(this.state.inputValue)) {
+          this.setState({inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value)});
+        } else {
+        this.setState({inputValue: event.target.value, memory: event.target.value});
+        }
+     }
+  
+  zeroClick(event) {
+    const zeroRegEx1 = /^[1-9]|^0\./g;
+    const zeroRegEx2 = /\/|\*|\-|\+/;
+    const x = this.state.inputValue[this.state.inputValue.length - 1]; 
+    if (this.state.inputValue[0] === "0" && this.state.memory[0] === 0) {
+      //need to fix line above to start with 0.XXX
+      this.setState({inputValue: event.target.value, memory: [0]});
+      } else if (zeroRegEx2.test(x)) {
+      this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)});
+      } else {
+      this.setState({inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value)});
+      }  
+    }
+  acClick() {
+    this.setState({inputValue: "0", memory: [0]});
+  }  
+  dotClick(event) {  
+    if (this.state.inputValue.indexOf(event.target.value) === -1) {
+      this.setState({inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value)});
+    }
+  }
+  operatorClick(event) {
+    const regEx = /\/|\*|\-|\+/i;
+    const x = this.state.memory[this.state.memory.length - 1];
+    //console.log(regEx.test(x));
+    if (regEx.test(x)) { 
+      this.state.memory.pop(); 
+      this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)}); 
+    } else {this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)});  
+            }
+   }
+  equalClick() {   
+    const regEx = /\/|\*|\-|\+/i;
+    const regEx2 = /\"/gi;
+    const x = this.state.memory[this.state.memory.length - 1];
+    if (regEx.test(x)) { 
+      this.state.memory.pop();        
+    }
+    const value = eval(this.state.memory.join(""));
+    this.setState({inputValue: value, memory: [value]}) 
+  }
+  render() {
+      return (
+          <div className="calculator container-fluid">
+            <p className="text-center">Calculator</p>
+            <div className="form-group"> 
+              <h2 id="memory" className="form-control text-right">{this.state.memory}</h2>
+              <h2 id="display" className="form-control text-right">
+                  {this.state.inputValue}
+              </h2>
+            </div> 
+            <div className="buttondiv">
+            <div className="row">
+              <div className="col-xs-3">
+                <button id="clear" onClick={this.acClick} className="btn btn-block btn-danger btn-lg">AC</button>
+              </div>
+              <div className="col-xs-6">
+                <button id="blank" class="btn btn-block btn-secondary btn-lg" disabled></button>
+              </div>
+              <div className="col-xs-3">
+                <button id="divide" value="/" onClick={this.operatorClick} className="btn btn-block btn-info btn-lg">÷</button>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-xs-3">
+                  <button id="seven" value="7" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">7</button>
+              </div>
+              <div className="col-xs-3">
+                  <button id="eight" value="8" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">8</button>
+              </div>
+              <div className="col-xs-3">
+                  <button id="nine" value="9" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">9</button>
+              </div>
+              <div className="col-xs-3">
+                  <button id="multiply" value="*" onClick={this.operatorClick} className="btn btn-block btn-info btn-lg">x</button>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-xs-3">
+                  <button id="four" value="4" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">4</button>
+              </div>
+              <div className="col-xs-3">
+                  <button id="five" value="5" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">5</button>
+              </div>
+              <div className="col-xs-3">
+                  <button id="six" value="6" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">6</button>
+              </div>
+              <div className="col-xs-3">
+                  <button id="subtract" value="-" onClick={this.operatorClick} className="btn btn-block btn-info btn-lg">-</button>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-xs-3">
+                  <button id="one" value="1" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">1</button>
+              </div>
+              <div className="col-xs-3">
+                  <button id="two" value="2" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">2</button>
+              </div>
+              <div className="col-xs-3">
+                  <button id="three" value="3" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">3</button>
+              </div>
+              <div className="col-xs-3">
+                  <button id="add" value="+" onClick={this.operatorClick} className="btn btn-block btn-info btn-lg">+</button>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-xs-6">
+                  <button id="zero" value="0" onClick={this.zeroClick} className="btn btn-block btn-secondary btn-lg">0</button>
+              </div>
+              <div className="col-xs-3">
+                  <button id="decimal" value="." onClick={this.dotClick} className="btn btn-block btn-secondary btn-lg">.</button>
+              </div>
+              <div className="col-xs-3">
+                  <button id="equals" value="=" onClick={this.equalClick} className="btn btn-block btn-success btn-lg">=</button>
+              </div> 
+          </div>
+            </div>
+          </div>     
+      )
+  }
+};
+ReactDOM.render(<Presentational />, document.getElementById("app"));

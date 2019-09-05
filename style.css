@@ -1,0 +1,23 @@
+body{
+  box-sizing: border-box;
+  background-color: rgb(197, 200, 204);
+}
+.calculator {
+  display: block;
+  max-width: 300px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: rgb(124, 128, 135, .6);
+  border-radius: 5px;
+}
+div.row {
+justify-content: center; 
+}
+button.btn {
+  width: 65px;
+  height: 65px;
+  margin: 2px;
+}
+#blank, #zero {
+  width: 134px;
+}
