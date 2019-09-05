@@ -2,12 +2,14 @@
   "name": "calculator",
   "version": "1.0.0",
   "description": "React Calculator",
-  "main": "index.js",
+  "main": "index.html",
   "scripts": {
-    "start": "index.html",
+    "start": "node index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": [
+    "react", "javascript", "calculator"
+  ],
   "author": "Erik O.",
   "license": "MIT",
   "dependencies": {

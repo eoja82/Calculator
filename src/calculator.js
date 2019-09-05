@@ -1,3 +1,5 @@
+//paste in terminal for babel: npx babel --watch src --out-dir . --presets react-app/prod 
+
 class Presentational extends React.Component {
   constructor(props) {
       super(props);
@@ -39,8 +41,9 @@ class Presentational extends React.Component {
       this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)});
       } else {
       this.setState({inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value)});
-      }  
-    }
+    }   
+  }  
+  
   acClick() {
     this.setState({inputValue: "0", memory: [0]});
   }  
