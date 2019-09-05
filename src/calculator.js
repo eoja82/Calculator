@@ -21,14 +21,14 @@ class Presentational extends React.Component {
       this.setState({inputValue: event.target.value, memory: [event.target.value]});
     } else if (inputRegEx.test(x)) {
       this.setState({inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value)});
-      } else if (inputRegEx2.test(x) || this.state.inputValue === "0") {
-        this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)});
-        } else if (inputRegEx3.test(this.state.inputValue)) {
-          this.setState({inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value)});
-        } else {
-        this.setState({inputValue: event.target.value, memory: event.target.value});
-        }
-     }
+    } else if (inputRegEx2.test(x) || this.state.inputValue === "0") {
+      this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)});
+    } else if (inputRegEx3.test(this.state.inputValue)) {
+      this.setState({inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value)});
+    } else {
+      this.setState({inputValue: event.target.value, memory: event.target.value});
+    }
+  }
   
   zeroClick(event) {
     const zeroRegEx1 = /^[1-9]|^0\./g;
@@ -38,9 +38,9 @@ class Presentational extends React.Component {
       //need to fix line above to start with 0.XXX
       this.setState({inputValue: event.target.value, memory: [0]});
       } else if (zeroRegEx2.test(x)) {
-      this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)});
+        this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)});
       } else {
-      this.setState({inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value)});
+        this.setState({inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value)});
     }   
   }  
   
