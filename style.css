@@ -21,3 +21,6 @@ button.btn {
 #blank, #zero {
   width: 134px;
 }
+#memory, #display {
+  overflow: auto;
+}

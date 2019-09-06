@@ -29,32 +29,27 @@ var Presentational = function (_React$Component) {
   _createClass(Presentational, [{
     key: "digitClick",
     value: function digitClick(event) {
-      var inputRegEx = /[1-9]|\./;
+      var inputRegEx = /[0-9]|\./;
       var inputRegEx2 = /\/|\*|\-|\+/;
-      var inputRegEx3 = /\d\.?0/g;
       var x = this.state.inputValue[this.state.inputValue.length - 1];
-      if (this.state.inputValue[0] === "0" && this.state.memory[0] === 0) {
-        //need to fix line above to start with 0.XXX, also can refractor in this area
+      if (this.state.inputValue === "0") {
         this.setState({ inputValue: event.target.value, memory: [event.target.value] });
       } else if (inputRegEx.test(x)) {
         this.setState({ inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value) });
-      } else if (inputRegEx2.test(x) || this.state.inputValue === "0") {
+      } else if (inputRegEx2.test(x)) {
         this.setState({ inputValue: event.target.value, memory: this.state.memory.concat(event.target.value) });
-      } else if (inputRegEx3.test(this.state.inputValue)) {
-        this.setState({ inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value) });
-      } else {
-        this.setState({ inputValue: event.target.value, memory: event.target.value });
       }
     }
   }, {
     key: "zeroClick",
     value: function zeroClick(event) {
-      var zeroRegEx1 = /^[1-9]|^0\./g;
+      var zeroRegEx1 = /[1-9]|\./;
       var zeroRegEx2 = /\/|\*|\-|\+/;
       var x = this.state.inputValue[this.state.inputValue.length - 1];
-      if (this.state.inputValue[0] === "0" && this.state.memory[0] === 0) {
-        //need to fix line above to start with 0.XXX
+      if (this.state.inputValue === "0") {
         this.setState({ inputValue: event.target.value, memory: [0] });
+      } else if (zeroRegEx1.test(x)) {
+        this.setState({ inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value) });
       } else if (zeroRegEx2.test(x)) {
         this.setState({ inputValue: event.target.value, memory: this.state.memory.concat(event.target.value) });
       } else {
@@ -78,10 +73,20 @@ var Presentational = function (_React$Component) {
     value: function operatorClick(event) {
       var regEx = /\/|\*|\-|\+/i;
       var x = this.state.memory[this.state.memory.length - 1];
-      //console.log(regEx.test(x));
-      if (regEx.test(x)) {
-        this.state.memory.pop();
-        this.setState({ inputValue: event.target.value, memory: this.state.memory.concat(event.target.value) });
+      if (this.state.inputValue === "0" && this.state.memory.length === 1 && event.target.value === "-") {
+        // for if first button pushed is the minus opperator
+        this.setState({ inputValue: "-", memory: ["-"] });
+      } else if (regEx.test(this.state.memory) && this.state.memory.length === 2 && this.state.memory[0] === 0 && event.target.value === "-") {
+        // this is for if /, *, or + is the first button pushed
+        this.setState({ inputValue: "-", memory: ["-"] });
+      } else if (regEx.test(x)) {
+        if (this.state.memory.length === 1) {
+          // if minus was first button pushed
+          this.setState({ inputValue: event.target.value, memory: [0].concat(event.target.value) });
+        } else {
+          this.state.memory.pop();
+          this.setState({ inputValue: event.target.value, memory: this.state.memory.concat(event.target.value) });
+        }
       } else {
         this.setState({ inputValue: event.target.value, memory: this.state.memory.concat(event.target.value) });
       }
@@ -90,7 +95,6 @@ var Presentational = function (_React$Component) {
     key: "equalClick",
     value: function equalClick() {
       var regEx = /\/|\*|\-|\+/i;
-      var regEx2 = /\"/gi;
       var x = this.state.memory[this.state.memory.length - 1];
       if (regEx.test(x)) {
         this.state.memory.pop();

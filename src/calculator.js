@@ -12,38 +12,31 @@ class Presentational extends React.Component {
       this.zeroClick = this.zeroClick.bind(this);
   }
   digitClick(event) {
-    const inputRegEx = /[1-9]|\./;
+    const inputRegEx = /[0-9]|\./;
     const inputRegEx2 = /\/|\*|\-|\+/;
-    const inputRegEx3 = /\d\.?0/g;
     const x = this.state.inputValue[this.state.inputValue.length - 1];  
-    if (this.state.inputValue[0] === "0" && this.state.memory[0] === 0) { 
-      //need to fix line above to start with 0.XXX, also can refractor in this area
+    if (this.state.inputValue === "0") { 
       this.setState({inputValue: event.target.value, memory: [event.target.value]});
     } else if (inputRegEx.test(x)) {
       this.setState({inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value)});
-    } else if (inputRegEx2.test(x) || this.state.inputValue === "0") {
+    } else if (inputRegEx2.test(x)) {
       this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)});
-    } else if (inputRegEx3.test(this.state.inputValue)) {
-      this.setState({inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value)});
-    } else {
-      this.setState({inputValue: event.target.value, memory: event.target.value});
     }
   }
-  
   zeroClick(event) {
-    const zeroRegEx1 = /^[1-9]|^0\./g;
+    const zeroRegEx1 = /[1-9]|\./;
     const zeroRegEx2 = /\/|\*|\-|\+/;
     const x = this.state.inputValue[this.state.inputValue.length - 1]; 
-    if (this.state.inputValue[0] === "0" && this.state.memory[0] === 0) {
-      //need to fix line above to start with 0.XXX
+    if (this.state.inputValue === "0") {
       this.setState({inputValue: event.target.value, memory: [0]});
-      } else if (zeroRegEx2.test(x)) {
-        this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)});
-      } else {
-        this.setState({inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value)});
+    } else if (zeroRegEx1.test(x)) {
+      this.setState({inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value)});
+    } else if (zeroRegEx2.test(x)) {
+      this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)});
+    } else {
+      this.setState({inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value)});
     }   
   }  
-  
   acClick() {
     this.setState({inputValue: "0", memory: [0]});
   }  
@@ -55,16 +48,26 @@ class Presentational extends React.Component {
   operatorClick(event) {
     const regEx = /\/|\*|\-|\+/i;
     const x = this.state.memory[this.state.memory.length - 1];
-    //console.log(regEx.test(x));
-    if (regEx.test(x)) { 
-      this.state.memory.pop(); 
-      this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)}); 
-    } else {this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)});  
-            }
-   }
+    if (this.state.inputValue === "0" && this.state.memory.length === 1 && event.target.value === "-") {
+      // for if first button pushed is the minus opperator
+      this.setState({inputValue: "-", memory: ["-"]});
+    } else if (regEx.test(this.state.memory) && this.state.memory.length === 2 &&    this.state.memory[0] === 0 && event.target.value === "-") {
+      // this is for if /, *, or + is the first button pushed
+      this.setState({inputValue: "-", memory: ["-"]});
+    } else if (regEx.test(x)) { 
+      if (this.state.memory.length === 1) {
+        // if minus was first button pushed
+        this.setState({inputValue: event.target.value, memory: [0].concat(event.target.value)});
+        } else {
+          this.state.memory.pop(); 
+          this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)}); 
+        }
+    } else {
+      this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)});  
+    }
+  }
   equalClick() {   
     const regEx = /\/|\*|\-|\+/i;
-    const regEx2 = /\"/gi;
     const x = this.state.memory[this.state.memory.length - 1];
     if (regEx.test(x)) { 
       this.state.memory.pop();        
