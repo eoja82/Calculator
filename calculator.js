@@ -82,12 +82,17 @@ var Presentational = function (_React$Component) {
       } else if (regEx.test(x)) {
         if (this.state.memory.length === 1) {
           // if minus was first button pushed
+          console.log("x: " + x);
+          console.log("operator minus first");
           this.setState({ inputValue: event.target.value, memory: [0].concat(event.target.value) });
         } else {
+          console.log("operator regEx else");
           this.state.memory.pop();
           this.setState({ inputValue: event.target.value, memory: this.state.memory.concat(event.target.value) });
         }
       } else {
+        console.log("x: " + x);
+        console.log("operator else");
         this.setState({ inputValue: event.target.value, memory: this.state.memory.concat(event.target.value) });
       }
     }
@@ -100,7 +105,10 @@ var Presentational = function (_React$Component) {
         this.state.memory.pop();
       }
       var value = eval(this.state.memory.join(""));
-      this.setState({ inputValue: value, memory: [value] });
+      //convert value (a number) to a string and an array for state
+      var inputValueResult = value.toString();
+      var memoryResult = Array.from(inputValueResult);
+      this.setState({ inputValue: inputValueResult, memory: memoryResult });
     }
   }, {
     key: "render",

@@ -2,18 +2,21 @@
   "name": "calculator",
   "version": "1.0.0",
   "description": "React Calculator",
-  "main": "index.html",
+  "main": "server.js",
   "scripts": {
-    "start": "node index.html",
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "react", "javascript", "calculator"
+    "react",
+    "javascript",
+    "calculator"
   ],
   "author": "Erik O.",
   "license": "MIT",
   "dependencies": {
     "babel-cli": "^6.26.0",
-    "babel-preset-react-app": "^3.1.2"
+    "babel-preset-react-app": "^3.1.2",
+    "express": "^4.17.1"
   }
 }
