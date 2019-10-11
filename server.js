@@ -4,10 +4,10 @@ var app = express();
 
 var port = process.env.PORT || 3000;
 
-//app.use("/style.css", express.static(process.cwd() + "/style.css"));
+app.use(express.static("public"));
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
+  res.sendFile("/views/index.html");
 })
 
 //404 Not Found Middleware

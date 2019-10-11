@@ -1,4 +1,4 @@
-//paste in terminal for babel: npx babel --watch src --out-dir . --presets react-app/prod 
+//paste in terminal for babel: npx babel --watch src --out-dir public --presets react-app/prod 
 
 class Presentational extends React.Component {
   constructor(props) {
