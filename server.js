@@ -1,14 +1,14 @@
-var express = require("express");
+const express = require("express");
+require("dotenv").config();
 
-var app = express();
+const app = express();
 
-var port = process.env.PORT || 3000;
+app.use("/public", express.static(process.cwd() + "/public"));
 
-app.use(express.static("public"));
-
-app.get("/", (req, res) => {
-  res.sendFile("/views/index.html");
-})
+app.route('/')
+  .get(function (req, res) {
+    res.sendFile(process.cwd() + '/views/index.html');
+  })
 
 //404 Not Found Middleware
 app.use(function(req, res, next) {
@@ -16,7 +16,6 @@ app.use(function(req, res, next) {
     .type('text')
     .send('Not Found');
 });
-
-app.listen(port, () => {
-  console.log("Node.js is listening");
-})
+app.listen(process.env.PORT, () => {
+  console.log("Listening on PORT");
+}); 
