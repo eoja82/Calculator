@@ -1,4 +1,4 @@
-//paste in terminal for babel: npx babel --watch src --out-dir public --presets react-app/prod 
+// to edit, paste in terminal for babel: npx babel --watch src --out-dir public --presets react-app/prod 
 
 class Presentational extends React.Component {
   constructor(props) {
@@ -51,23 +51,19 @@ class Presentational extends React.Component {
     if (this.state.inputValue === "0" && this.state.memory.length === 1 && event.target.value === "-") {
       // for if first button pushed is the minus opperator
       this.setState({inputValue: "-", memory: ["-"]});
-    } else if (regEx.test(this.state.memory) && this.state.memory.length === 2 &&    this.state.memory[0] === 0 && event.target.value === "-") {
+    } else if (regEx.test(this.state.memory) && this.state.memory.length === 2 && 
+                          this.state.memory[0] === 0 && event.target.value === "-") {
       // this is for if /, *, or + is the first button pushed
       this.setState({inputValue: "-", memory: ["-"]});
     } else if (regEx.test(x)) { 
       if (this.state.memory.length === 1) {
         // if minus was first button pushed
-        console.log("x: " + x);
-        console.log("operator minus first");
         this.setState({inputValue: event.target.value, memory: [0].concat(event.target.value)});
         } else {
-          console.log("operator regEx else");
           this.state.memory.pop(); 
           this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)}); 
         }
     } else {
-      console.log("x: " + x);
-      console.log("operator else");
       this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)});  
     }
   }
