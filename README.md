@@ -1,4 +1,4 @@
 # Calculator
-A calculator built utilizing React.  
+A calculator built with React.  
 
-Demo live here:  https://codepen.io/EOJA/full/ZNQZqy  
+Demo live here: https://eoja82-calculator.glitch.me/ 
