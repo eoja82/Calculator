@@ -69,8 +69,14 @@ var Presentational = function (_React$Component) {
   }, {
     key: "dotClick",
     value: function dotClick(event) {
+      var operatorRegEx = /\/|\*|\-|\+/;
+      var x = this.state.inputValue[this.state.inputValue.length - 1];
       if (this.state.inputValue.indexOf(event.target.value) === -1) {
-        this.setState({ inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value) });
+        if (operatorRegEx.test(x)) {
+          this.setState({ inputValue: this.state.inputValue.concat("0" + event.target.value), memory: this.state.memory.concat(["0", event.target.value]) });
+        } else {
+          this.setState({ inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value) });
+        }
       }
     }
   }, {
