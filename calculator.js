@@ -32,8 +32,13 @@ var Presentational = function (_React$Component) {
       var inputRegEx = /[0-9]|\./;
       var inputRegEx2 = /\/|\*|\-|\+/;
       var x = this.state.inputValue[this.state.inputValue.length - 1];
-      if (this.state.inputValue === "0") {
-        this.setState({ inputValue: event.target.value, memory: [event.target.value] });
+      if (this.state.inputValue[0] === "0" && this.state.inputValue.length === 1) {
+        if (this.state.memory.length === 1) {
+          this.setState({ inputValue: event.target.value, memory: [event.target.value] });
+        } else {
+          this.setState({ memory: this.state.memory.pop() });
+          this.setState({ inputValue: event.target.value, memory: this.state.memory.concat(event.target.value) });
+        }
       } else if (inputRegEx.test(x)) {
         this.setState({ inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value) });
       } else if (inputRegEx2.test(x)) {
@@ -46,8 +51,8 @@ var Presentational = function (_React$Component) {
       var zeroRegEx1 = /[1-9]|\./;
       var zeroRegEx2 = /\/|\*|\-|\+/;
       var x = this.state.inputValue[this.state.inputValue.length - 1];
-      if (this.state.inputValue === "0") {
-        this.setState({ inputValue: event.target.value, memory: [0] });
+      if (this.state.inputValue[0] === "0" && this.state.inputValue.length === 1 && event.target.value === "0") {
+        return;
       } else if (zeroRegEx1.test(x)) {
         this.setState({ inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value) });
       } else if (zeroRegEx2.test(x)) {
@@ -104,6 +109,11 @@ var Presentational = function (_React$Component) {
       var inputValueResult = value.toString();
       var memoryResult = Array.from(inputValueResult);
       this.setState({ inputValue: inputValueResult, memory: memoryResult });
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {
+      console.log(this.state.inputValue, this.state.memory);
     }
   }, {
     key: "render",

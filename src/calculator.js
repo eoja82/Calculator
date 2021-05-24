@@ -15,8 +15,13 @@ class Presentational extends React.Component {
     const inputRegEx = /[0-9]|\./;
     const inputRegEx2 = /\/|\*|\-|\+/;
     const x = this.state.inputValue[this.state.inputValue.length - 1];  
-    if (this.state.inputValue === "0") { 
-      this.setState({inputValue: event.target.value, memory: [event.target.value]});
+    if (this.state.inputValue[0] === "0" && this.state.inputValue.length === 1) { 
+      if (this.state.memory.length === 1) {
+        this.setState({inputValue: event.target.value, memory: [event.target.value]});
+      } else {
+        this.setState({memory: this.state.memory.pop()})
+        this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)})
+      }
     } else if (inputRegEx.test(x)) {
       this.setState({inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value)});
     } else if (inputRegEx2.test(x)) {
@@ -27,15 +32,17 @@ class Presentational extends React.Component {
     const zeroRegEx1 = /[1-9]|\./;
     const zeroRegEx2 = /\/|\*|\-|\+/;
     const x = this.state.inputValue[this.state.inputValue.length - 1]; 
-    if (this.state.inputValue === "0") {
-      this.setState({inputValue: event.target.value, memory: [0]});
+    if (this.state.inputValue[0] === "0" && 
+        this.state.inputValue.length === 1 && 
+        event.target.value === "0") {
+      return
     } else if (zeroRegEx1.test(x)) {
       this.setState({inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value)});
     } else if (zeroRegEx2.test(x)) {
       this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)});
     } else {
       this.setState({inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value)});
-    }   
+    }
   }  
   acClick() {
     this.setState({inputValue: "0", memory: [0]});
@@ -79,6 +86,7 @@ class Presentational extends React.Component {
     let memoryResult = Array.from(inputValueResult);
     this.setState({inputValue: inputValueResult, memory: memoryResult});
   }
+  componentDidUpdate() {console.log(this.state.inputValue, this.state.memory)}
   render() {
       return (
           <div className="calculator container-fluid">
