@@ -3,7 +3,7 @@
 class Presentational extends React.Component {
   constructor(props) {
       super(props);
-      this.state = {inputValue: "0", memory: [0]}
+      this.state = {inputValue: "0", memory: [0], lastButtonEqual: false}
       this.digitClick = this.digitClick.bind(this);
       this.acClick = this.acClick.bind(this);
       this.dotClick = this.dotClick.bind(this);
@@ -15,52 +15,65 @@ class Presentational extends React.Component {
     const inputRegEx = /[0-9]|\./;
     const inputRegEx2 = /\/|\*|\-|\+/;
     const x = this.state.inputValue[this.state.inputValue.length - 1];  
-    if (this.state.inputValue[0] === "0" && this.state.inputValue.length === 1) { 
-      if (this.state.memory.length === 1) {
-        this.setState({inputValue: event.target.value, memory: [event.target.value]});
-      } else {
-        this.setState({memory: this.state.memory.pop()});
+    if (this.state.lastButtonEqual) {
+      this.setState({inputValue: event.target.value, memory: [event.target.value], lastButtonEqual: false});
+    } else {
+      if (this.state.inputValue[0] === "0" && this.state.inputValue.length === 1) { 
+        if (this.state.memory.length === 1) {
+          this.setState({inputValue: event.target.value, memory: [event.target.value]});
+        } else {
+          this.setState({memory: this.state.memory.pop()});
+          this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)});
+        }
+      } else if (inputRegEx.test(x)) {
+        this.setState({inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value)});
+      } else if (inputRegEx2.test(x)) {
         this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)});
       }
-    } else if (inputRegEx.test(x)) {
-      this.setState({inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value)});
-    } else if (inputRegEx2.test(x)) {
-      this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)});
     }
   }
   zeroClick(event) {
     const zeroRegEx1 = /[1-9]|\./;
     const zeroRegEx2 = /\/|\*|\-|\+/;
-    const x = this.state.inputValue[this.state.inputValue.length - 1]; 
-    if (this.state.inputValue[0] === "0" && 
-        this.state.inputValue.length === 1 && 
-        event.target.value === "0") {
-      return
-    } else if (zeroRegEx1.test(x)) {
-      this.setState({inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value)});
-    } else if (zeroRegEx2.test(x)) {
-      this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)});
+    const x = this.state.inputValue[this.state.inputValue.length - 1];
+    if (this.state.lastButtonEqual) {
+      this.setState({inputValue: "0", memory: ["0"], lastButtonEqual: false});
     } else {
-      this.setState({inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value)});
+      if (this.state.inputValue[0] === "0" && 
+          this.state.inputValue.length === 1 && 
+          event.target.value === "0") {
+        return;
+      } else if (zeroRegEx1.test(x)) {
+        this.setState({inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value)});
+      } else if (zeroRegEx2.test(x)) {
+        this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)});
+      } else {
+        this.setState({inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value)});
+      }
     }
   }  
   acClick() {
-    this.setState({inputValue: "0", memory: [0]});
+    this.setState({inputValue: "0", memory: [0], lastButtonEqual: false});
   }  
   dotClick(event) {
     const operatorRegEx = /\/|\*|\-|\+/;
     const x = this.state.inputValue[this.state.inputValue.length - 1];
-    if (this.state.inputValue.indexOf(event.target.value) === -1) {
-      if (operatorRegEx.test(x)) {
-        this.setState({inputValue: this.state.inputValue.concat(`0${event.target.value}`), memory: this.state.memory.concat(["0", event.target.value])});
-      } else {
-        this.setState({inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value)});
+    if (this.state.lastButtonEqual) {
+      this.setState({inputValue: "0.", memory: ["0", "."], lastButtonEqual: false});
+    } else {
+      if (this.state.inputValue.indexOf(event.target.value) === -1) {
+        if (operatorRegEx.test(x)) {
+          this.setState({inputValue: this.state.inputValue.concat(`0${event.target.value}`), memory: this.state.memory.concat(["0", event.target.value])});
+        } else {
+          this.setState({inputValue: this.state.inputValue.concat(event.target.value), memory: this.state.memory.concat(event.target.value)});
+        }
       }
     }
   }
   operatorClick(event) {
     const regEx = /\/|\*|\-|\+/i;
     const x = this.state.memory[this.state.memory.length - 1];
+    this.setState({lastButtonEqual: false});
     if (this.state.inputValue === "0" && this.state.memory.length === 1 && event.target.value === "-") {
       // for if first button pushed is the minus opperator
       this.setState({inputValue: "-", memory: ["-"]});
@@ -80,9 +93,10 @@ class Presentational extends React.Component {
       this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)});  
     }
   }
-  equalClick() {   
+  equalClick() {
     const regEx = /\/|\*|\-|\+/i;
     const x = this.state.memory[this.state.memory.length - 1];
+    this.setState({lastButtonEqual: true});
     if (regEx.test(x)) { 
       this.state.memory.pop();        
     }
