@@ -74,6 +74,9 @@ class Presentational extends React.Component {
     const regEx = /\/|\*|\-|\+/i;
     const x = this.state.memory[this.state.memory.length - 1];
     this.setState({lastButtonEqual: false});
+    if (this.state.memory[this.state.memory.length - 1] === ".") {
+      this.setState({memory: this.state.memory.pop()});
+    }
     if (this.state.inputValue === "0" && this.state.memory.length === 1 && event.target.value === "-") {
       // for if first button pushed is the minus opperator
       this.setState({inputValue: "-", memory: ["-"]});
