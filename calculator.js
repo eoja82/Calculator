@@ -7,6 +7,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 // to edit, paste in terminal for babel: npx babel --watch src --out-dir . --presets react-app/prod 
+var originalState = { inputValue: "0", memory: ["0"], lastButtonEqual: false };
 
 var Presentational = function (_React$Component) {
   _inherits(Presentational, _React$Component);
@@ -16,7 +17,7 @@ var Presentational = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Presentational.__proto__ || Object.getPrototypeOf(Presentational)).call(this, props));
 
-    _this.state = { inputValue: "0", memory: [0], lastButtonEqual: false };
+    _this.state = originalState;
     _this.digitClick = _this.digitClick.bind(_this);
     _this.acClick = _this.acClick.bind(_this);
     _this.dotClick = _this.dotClick.bind(_this);
@@ -56,7 +57,7 @@ var Presentational = function (_React$Component) {
       var zeroRegEx2 = /\/|\*|\-|\+/;
       var x = this.state.inputValue[this.state.inputValue.length - 1];
       if (this.state.lastButtonEqual) {
-        this.setState({ inputValue: "0", memory: ["0"], lastButtonEqual: false });
+        this.setState(originalState);
       } else {
         if (this.state.inputValue[0] === "0" && this.state.inputValue.length === 1 && event.target.value === "0") {
           return;
@@ -72,7 +73,7 @@ var Presentational = function (_React$Component) {
   }, {
     key: "acClick",
     value: function acClick() {
-      this.setState({ inputValue: "0", memory: [0], lastButtonEqual: false });
+      this.setState(originalState);
     }
   }, {
     key: "dotClick",
@@ -95,48 +96,46 @@ var Presentational = function (_React$Component) {
     key: "operatorClick",
     value: function operatorClick(event) {
       var regEx = /\/|\*|\-|\+/i;
-      var x = this.state.memory[this.state.memory.length - 1];
+      var lastInput = this.state.memory[this.state.memory.length - 1];
+      var operator = event.target.value;
+      var memoryLen = this.state.memory.length;
       this.setState({ lastButtonEqual: false });
-      if (this.state.memory[this.state.memory.length - 1] === ".") {
+      if (this.state.memory[memoryLen - 1] === ".") {
         this.setState({ memory: this.state.memory.pop() });
       }
-      if (this.state.inputValue === "0" && this.state.memory.length === 1 && event.target.value === "-") {
+      if (this.state.inputValue === "0" && memoryLen === 1 && operator === "-") {
         // for if first button pushed is the minus opperator
         this.setState({ inputValue: "-", memory: ["-"] });
-      } else if (regEx.test(this.state.memory) && this.state.memory.length === 2 && this.state.memory[0] === 0 && event.target.value === "-") {
+      } else if (regEx.test(this.state.memory) && memoryLen === 2 && this.state.memory[0] === 0 && operator === "-") {
         // this is for if /, *, or + is the first button pushed
         this.setState({ inputValue: "-", memory: ["-"] });
-      } else if (regEx.test(x)) {
-        if (this.state.memory.length === 1) {
+      } else if (regEx.test(lastInput)) {
+        if (memoryLen === 1) {
           // if minus was first button pushed
-          this.setState({ inputValue: event.target.value, memory: [0].concat(event.target.value) });
+          this.setState({ inputValue: operator, memory: ["0"].concat(operator) });
         } else {
           this.state.memory.pop();
-          this.setState({ inputValue: event.target.value, memory: this.state.memory.concat(event.target.value) });
+          this.setState({ inputValue: operator, memory: this.state.memory.concat(operator) });
         }
       } else {
-        this.setState({ inputValue: event.target.value, memory: this.state.memory.concat(event.target.value) });
+        this.setState({ inputValue: operator, memory: this.state.memory.concat(operator) });
       }
     }
   }, {
     key: "equalClick",
     value: function equalClick() {
+      /* *************** fix first click is minus, second click equal causes error ********************** */
       var regEx = /\/|\*|\-|\+/i;
       var x = this.state.memory[this.state.memory.length - 1];
       this.setState({ lastButtonEqual: true });
       if (regEx.test(x)) {
-        this.state.memory.pop();
+        this.setState({ memory: this.state.memory.pop() });
       }
       var value = eval(this.state.memory.join(""));
       //convert value (a number) to a string and an array for state
       var inputValueResult = value.toString();
       var memoryResult = Array.from(inputValueResult);
       this.setState({ inputValue: inputValueResult, memory: memoryResult });
-    }
-  }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate() {
-      console.log(this.state.inputValue, this.state.memory);
     }
   }, {
     key: "render",

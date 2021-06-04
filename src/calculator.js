@@ -1,9 +1,10 @@
 // to edit, paste in terminal for babel: npx babel --watch src --out-dir . --presets react-app/prod 
+const originalState = {inputValue: "0", memory: ["0"], lastButtonEqual: false};
 
 class Presentational extends React.Component {
   constructor(props) {
       super(props);
-      this.state = {inputValue: "0", memory: [0], lastButtonEqual: false}
+      this.state = originalState;
       this.digitClick = this.digitClick.bind(this);
       this.acClick = this.acClick.bind(this);
       this.dotClick = this.dotClick.bind(this);
@@ -37,7 +38,7 @@ class Presentational extends React.Component {
     const zeroRegEx2 = /\/|\*|\-|\+/;
     const x = this.state.inputValue[this.state.inputValue.length - 1];
     if (this.state.lastButtonEqual) {
-      this.setState({inputValue: "0", memory: ["0"], lastButtonEqual: false});
+      this.setState(originalState);
     } else {
       if (this.state.inputValue[0] === "0" && 
           this.state.inputValue.length === 1 && 
@@ -53,7 +54,7 @@ class Presentational extends React.Component {
     }
   }  
   acClick() {
-    this.setState({inputValue: "0", memory: [0], lastButtonEqual: false});
+    this.setState(originalState);
   }  
   dotClick(event) {
     const operatorRegEx = /\/|\*|\-|\+/;
@@ -72,36 +73,39 @@ class Presentational extends React.Component {
   }
   operatorClick(event) {
     const regEx = /\/|\*|\-|\+/i;
-    const x = this.state.memory[this.state.memory.length - 1];
+    const lastInput = this.state.memory[this.state.memory.length - 1];
+    const operator = event.target.value;
+    const memoryLen = this.state.memory.length;
     this.setState({lastButtonEqual: false});
-    if (this.state.memory[this.state.memory.length - 1] === ".") {
+    if (this.state.memory[memoryLen - 1] === ".") {
       this.setState({memory: this.state.memory.pop()});
     }
-    if (this.state.inputValue === "0" && this.state.memory.length === 1 && event.target.value === "-") {
+    if (this.state.inputValue === "0" && memoryLen === 1 && operator === "-") {
       // for if first button pushed is the minus opperator
       this.setState({inputValue: "-", memory: ["-"]});
-    } else if (regEx.test(this.state.memory) && this.state.memory.length === 2 && 
-                          this.state.memory[0] === 0 && event.target.value === "-") {
+    } else if (regEx.test(this.state.memory) && memoryLen === 2 && 
+                          this.state.memory[0] === 0 && operator === "-") {
       // this is for if /, *, or + is the first button pushed
       this.setState({inputValue: "-", memory: ["-"]});
-    } else if (regEx.test(x)) { 
-      if (this.state.memory.length === 1) {
+    } else if (regEx.test(lastInput)) { 
+      if (memoryLen === 1) {
         // if minus was first button pushed
-        this.setState({inputValue: event.target.value, memory: [0].concat(event.target.value)});
+        this.setState({inputValue: operator, memory: ["0"].concat(operator)});
         } else {
-          this.state.memory.pop(); 
-          this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)}); 
+          this.state.memory.pop();
+          this.setState({inputValue: operator, memory: this.state.memory.concat(operator)});
         }
     } else {
-      this.setState({inputValue: event.target.value, memory: this.state.memory.concat(event.target.value)});  
+      this.setState({inputValue: operator, memory: this.state.memory.concat(operator)});
     }
   }
   equalClick() {
+    /* *************** fix first click is minus, second click equal causes error ********************** */
     const regEx = /\/|\*|\-|\+/i;
     const x = this.state.memory[this.state.memory.length - 1];
     this.setState({lastButtonEqual: true});
     if (regEx.test(x)) { 
-      this.state.memory.pop();        
+      this.setState({memory: this.state.memory.pop()});     
     }
     const value = eval(this.state.memory.join(""));
     //convert value (a number) to a string and an array for state
@@ -109,7 +113,6 @@ class Presentational extends React.Component {
     let memoryResult = Array.from(inputValueResult);
     this.setState({inputValue: inputValueResult, memory: memoryResult});
   }
-  componentDidUpdate() {console.log(this.state.inputValue, this.state.memory)}
   render() {
       return (
           <div className="calculator container-fluid">
