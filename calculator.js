@@ -96,9 +96,9 @@ var Presentational = function (_React$Component) {
     key: "operatorClick",
     value: function operatorClick(event) {
       var regEx = /\/|\*|\-|\+/i;
-      var lastInput = this.state.memory[this.state.memory.length - 1];
-      var operator = event.target.value;
       var memoryLen = this.state.memory.length;
+      var lastInput = this.state.memory[memoryLen - 1];
+      var operator = event.target.value;
       this.setState({ lastButtonEqual: false });
       if (this.state.memory[memoryLen - 1] === ".") {
         this.setState({ memory: this.state.memory.pop() });
@@ -124,12 +124,17 @@ var Presentational = function (_React$Component) {
   }, {
     key: "equalClick",
     value: function equalClick() {
-      /* *************** fix first click is minus, second click equal causes error ********************** */
       var regEx = /\/|\*|\-|\+/i;
-      var x = this.state.memory[this.state.memory.length - 1];
+      var memoryLen = this.state.memory.length;
+      var x = this.state.memory[memoryLen - 1];
       this.setState({ lastButtonEqual: true });
       if (regEx.test(x)) {
-        this.setState({ memory: this.state.memory.pop() });
+        if (memoryLen === 1) {
+          this.setState(originalState);
+          return;
+        } else {
+          this.setState({ memory: this.state.memory.pop() });
+        }
       }
       var value = eval(this.state.memory.join(""));
       //convert value (a number) to a string and an array for state
