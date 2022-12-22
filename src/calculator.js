@@ -119,83 +119,83 @@ class Presentational extends React.Component {
     this.setState({inputValue: inputValueResult, memory: memoryResult});
   }
   render() {
-      return (
-          <div className="calculator container-fluid">
-            <p className="text-center">Calculator</p>
-            <div className="form-group"> 
-              <h2 id="memory" className="form-control text-right">{this.state.memory}</h2>
-              <h2 id="display" className="form-control text-right">
-                  {this.state.inputValue}
-              </h2>
-            </div> 
-            <div className="buttondiv">
-            <div className="row">
-              <div className="col-xs-3">
-                <button id="clear" onClick={this.acClick} className="btn btn-block btn-danger btn-lg">AC</button>
-              </div>
-              <div className="col-xs-6">
-                <button id="blank" class="btn btn-block btn-secondary btn-lg" disabled></button>
-              </div>
-              <div className="col-xs-3">
-                <button id="divide" value="/" onClick={this.operatorClick} className="btn btn-block btn-info btn-lg">÷</button>
-              </div>
+    return (
+      <div className="calculator container-fluid">
+        <p className="text-center">Calculator</p>
+        <div className="form-group">
+          <h2 id="memory" className="form-control text-right">{this.state.memory}</h2>
+          <h2 id="display" className="form-control text-right">
+            {this.state.inputValue}
+          </h2>
+        </div>
+        <div className="buttondiv">
+          <div className="row">
+            <div className="col-xs-3">
+              <button id="clear" onClick={this.acClick} className="btn btn-block btn-danger btn-lg">AC</button>
             </div>
-            <div className="row">
-              <div className="col-xs-3">
-                  <button id="seven" value="7" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">7</button>
-              </div>
-              <div className="col-xs-3">
-                  <button id="eight" value="8" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">8</button>
-              </div>
-              <div className="col-xs-3">
-                  <button id="nine" value="9" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">9</button>
-              </div>
-              <div className="col-xs-3">
-                  <button id="multiply" value="*" onClick={this.operatorClick} className="btn btn-block btn-info btn-lg">x</button>
-              </div>
+            <div className="col-xs-6">
+              <button id="blank" class="btn btn-block btn-secondary btn-lg" disabled></button>
             </div>
-            <div className="row">
-              <div className="col-xs-3">
-                  <button id="four" value="4" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">4</button>
-              </div>
-              <div className="col-xs-3">
-                  <button id="five" value="5" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">5</button>
-              </div>
-              <div className="col-xs-3">
-                  <button id="six" value="6" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">6</button>
-              </div>
-              <div className="col-xs-3">
-                  <button id="subtract" value="-" onClick={this.operatorClick} className="btn btn-block btn-info btn-lg">-</button>
-              </div>
+            <div className="col-xs-3">
+              <button id="divide" value="/" onClick={this.operatorClick} className="btn btn-block btn-info btn-lg">÷</button>
             </div>
-            <div className="row">
-              <div className="col-xs-3">
-                  <button id="one" value="1" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">1</button>
-              </div>
-              <div className="col-xs-3">
-                  <button id="two" value="2" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">2</button>
-              </div>
-              <div className="col-xs-3">
-                  <button id="three" value="3" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">3</button>
-              </div>
-              <div className="col-xs-3">
-                  <button id="add" value="+" onClick={this.operatorClick} className="btn btn-block btn-info btn-lg">+</button>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-xs-6">
-                  <button id="zero" value="0" onClick={this.zeroClick} className="btn btn-block btn-secondary btn-lg">0</button>
-              </div>
-              <div className="col-xs-3">
-                  <button id="decimal" value="." onClick={this.dotClick} className="btn btn-block btn-secondary btn-lg">.</button>
-              </div>
-              <div className="col-xs-3">
-                  <button id="equals" value="=" onClick={this.equalClick} className="btn btn-block btn-success btn-lg">=</button>
-              </div> 
           </div>
+          <div className="row">
+            <div className="col-xs-3">
+              <button id="seven" value="7" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">7</button>
             </div>
-          </div>     
-      )
+            <div className="col-xs-3">
+              <button id="eight" value="8" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">8</button>
+            </div>
+            <div className="col-xs-3">
+              <button id="nine" value="9" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">9</button>
+            </div>
+            <div className="col-xs-3">
+              <button id="multiply" value="*" onClick={this.operatorClick} className="btn btn-block btn-info btn-lg">x</button>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-xs-3">
+              <button id="four" value="4" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">4</button>
+            </div>
+            <div className="col-xs-3">
+              <button id="five" value="5" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">5</button>
+            </div>
+            <div className="col-xs-3">
+              <button id="six" value="6" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">6</button>
+            </div>
+            <div className="col-xs-3">
+              <button id="subtract" value="-" onClick={this.operatorClick} className="btn btn-block btn-info btn-lg">-</button>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-xs-3">
+              <button id="one" value="1" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">1</button>
+            </div>
+            <div className="col-xs-3">
+              <button id="two" value="2" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">2</button>
+            </div>
+            <div className="col-xs-3">
+              <button id="three" value="3" onClick={this.digitClick} className="btn btn-block btn-secondary btn-lg">3</button>
+            </div>
+            <div className="col-xs-3">
+              <button id="add" value="+" onClick={this.operatorClick} className="btn btn-block btn-info btn-lg">+</button>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-xs-6">
+              <button id="zero" value="0" onClick={this.zeroClick} className="btn btn-block btn-secondary btn-lg">0</button>
+            </div>
+            <div className="col-xs-3">
+              <button id="decimal" value="." onClick={this.dotClick} className="btn btn-block btn-secondary btn-lg">.</button>
+            </div>
+            <div className="col-xs-3">
+              <button id="equals" value="=" onClick={this.equalClick} className="btn btn-block btn-success btn-lg">=</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
 };
 ReactDOM.render(<Presentational />, document.getElementById("app"));
